@@ -28,3 +28,36 @@ func FindStarById(w http.ResponseWriter, r *http.Request) {
 	database.DB.First(&star, id)
 	json.NewEncoder(w).Encode(star)
 }
+
+func CreateNewStar(w http.ResponseWriter, r *http.Request) {
+	var newStar models.Star
+	json.NewDecoder(r.Body).Decode(&newStar)
+
+	database.DB.Save(&newStar)
+	json.NewEncoder(w).Encode(newStar)
+}
+
+func DeleteStar(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	var star models.Star
+
+	database.DB.First(&star, id)
+
+	database.DB.Delete(&star, id)
+	json.NewEncoder(w).Encode(star)
+}
+
+func UpdateStar(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	var star models.Star
+	database.DB.First(&star, id)
+
+	json.NewDecoder(r.Body).Decode(&star)
+
+	database.DB.Save(&star)
+	json.NewEncoder(w).Encode(star)
+}
