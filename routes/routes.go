@@ -6,6 +6,7 @@ import (
 
 	"github.com/SamuelLFA/api-go-rest/controllers"
 	"github.com/SamuelLFA/api-go-rest/middleware"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -18,5 +19,5 @@ func HandleRequest() {
 	r.HandleFunc("/stars/{id}", controllers.FindStarById).Methods("Get")
 	r.HandleFunc("/stars/{id}", controllers.DeleteStar).Methods("Delete")
 	r.HandleFunc("/stars/{id}", controllers.UpdateStar).Methods("Put")
-	log.Fatal(http.ListenAndServe(":8000", r))
+	log.Fatal(http.ListenAndServe(":8000", handlers.CORS(handlers.AllowedOrigins([]string{"*"}))(r)))
 }
